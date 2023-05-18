@@ -68,3 +68,5 @@
 * The whole process is very error-prone.
 * The local WebServer is needed due to the installtion of the additional packages. It is possible to copy the packages directly to the USB device and install it from there (change opkg URL to something like: _file:///packages/_ )
 * The whole process could be simplified if the configuration is supported inside the Gluon Framwork.
+* Cloning Gluon and then the freifunk site should match, otherwise you encounter some build or configuration errors, if the site config does not support an actual gluon framwork
+
