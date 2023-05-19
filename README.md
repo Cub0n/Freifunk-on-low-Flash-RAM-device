@@ -1,22 +1,24 @@
-# Freifunk-on-low-Flash-or-RAM
+# Freifunk for low Flash/Mem devices (old hardware)
 
 ## Forewords
-* The instruction is not complete and may have some errors and the installation itself is very tricky. 
+* The instruction is not complete and may have some errors and the installation itself is very tricky.
+* **Knowledge of configuring and compiling OpenWrt for the target device is required!**
 * Images for different router and/or packages will not be provided and has to be self-compiled.
 * The whole process can take several hours. The whole instruction and process is just a proof of concept to install Freifunk on old hardware.
 * Several steps can be simplified and/or enhanced ... let's see when it's time for that ...
 
 ## Idea
-* Configure image with blockmount and the needed packages as modules
+* Configure image with block-mount and the needed packages as modules to mount a USB device
 * Compile Freifunk Gluon
-* Boot the small image and prepare USB device
+* Boot the small image and prepare USB device (establish overlay)
 * Boot again and install the remaining packages
 
 ## Prerequisits
+* Linux PC
 * "Old" router with USB Port where OpenWRT can be installed
 * USB device, formatted with ext4 (1Gb capacity is sufficient)
 * (Home) Network
-* WebServer on the same subnet (WebServer like https://pythonbasics.org/webserver/ is sufficient)
+* (Temporary) WebServer on the same subnet (WebServer like https://pythonbasics.org/webserver/ is sufficient). OpenWRT was not able to request packages from a webserver which was not on the same subnet. No idea why. Check if a all ports are accessible to WebServer; Perhaps there is a firewall in place (ufw, firewalld, etc)
 
 ## Instructions
 * Build Docker container (see Docker directory)
@@ -27,12 +29,12 @@
 * Change to gluon repo and execute _make update_
 * Change to subdirectory openwrt and execute _make menuconfig_
 * Change device model and subtarget
-* Change every package and kernel module **which are not needed to mount a USB device** as module (This will take very long and has to be adjusted for every device)
-* Select at least busybox, dropbear, block-mount, kmod-fs-ext4 e2fsprogs, usb2, etc. to compile inside the image (see https://openwrt.org/docs/guide-user/additional-software/extroot_configuration)
+* Change every package and kernel module **which are not needed to mount a USB device** as module (This will take very long and has to be adjusted for every device). Not needed packages are all dealing with Wifi, dnsmasq, lua, etc.
+* Select at least busybox, dropbear, block-mount, kmod-fs-ext4, kmod-uhci/ohci, and all applicatons necessary to run a minmal OpenWRT to compile inside the image (see https://openwrt.org/docs/guide-user/additional-software/extroot_configuration)
 * Select the needed Freifunk packages as modules
 * Exit and save configuration
 * Execute _make_, this will download, extract, compile and build the image and all selected packages
-* The resulting image and packages are located under _gluon/openwrt/bin/targets/_
+* The resulting image and packages are located under _gluon/openwrt/bin/targets/_ and should be smaller than 4MB. If not, repeat the steps to select and mark applications as modules
 * Leave the docker container
 * Plug the formatted ext4 USB device into the router
 * Select the image and flash the router (this can differ for every device), the network cable has to be plugged in a LAN port
@@ -66,7 +68,7 @@
 
 ## Issues
 * The whole process is very error-prone.
-* The local WebServer is needed due to the installtion of the additional packages. It is possible to copy the packages directly to the USB device and install it from there (change opkg URL to something like: _file:///packages/_ )
+* The local WebServer is needed due to the installation of the additional packages. It is possible to copy the packages directly to the USB device and install it from there (change opkg URL to something like: _file:///packages/_ )
 * The whole process could be simplified if the configuration is supported inside the Gluon Framwork.
 * Cloning Gluon and then the freifunk site should match, otherwise you encounter some build or configuration errors, if the site config does not support an actual gluon framwork
 * The router can be very slow and will not handle many Wi-Fi devices, especially if the router has low flash and memory (4MB/32MB)
