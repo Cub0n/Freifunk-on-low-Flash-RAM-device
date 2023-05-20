@@ -18,7 +18,7 @@
 * "Old" router with USB Port where OpenWRT can be installed
 * USB device, formatted with ext4 (1Gb capacity is sufficient)
 * (Home) Network
-* (Temporary) web server on the same subnet (web server like https://pythonbasics.org/webserver/ is sufficient). OpenWRT was not able to request packages from a web server which was not on the same subnet. No idea why, perhaps there was no gateway set. Check if a all ports are accessible to web server; Perhaps there is a firewall in place (ufw, firewalld, etc)
+* (Temporary) web server on the same subnet (web server like https://pythonbasics.org/webserver/ is sufficient). OpenWRT was not able to download packages from a web server which was not on the same subnet. No idea why, perhaps there was no gateway set. Check if a all ports are accessible to web server; Perhaps there is a firewall in place (ufw, firewalld, etc)
 
 ## Instructions
 * Clone Freifunk Gluon (git clone https://github.com/freifunk-gluon/gluon.git gluon -b RELEASE)
@@ -74,4 +74,4 @@
 * The local web server is needed due to the installation of the additional packages. It is possible to copy the packages directly to the USB device and install it from there (change opkg URL to something like: _file:///packages/_ )
 * The whole process could be simplified if the configuration is supported inside the Gluon Framework.
 * Cloning Gluon and then the Freifunk site should match, otherwise you encounter some build or configuration errors, if the site config does not support an actual gluon framework
-* The router can be very slow and will not handle many WiFi devices, especially if the router has low flash and memory (4MB/32MB)
+* The router can be very slow and will not handle many WiFi clients, especially if the router has low flash and memory (4MB/32MB)
